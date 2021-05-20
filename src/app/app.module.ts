@@ -11,14 +11,14 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
   signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     {
       requireDisplayName: false,
       provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
-    }
+    },
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ],
-  tosUrl: 'www.google.com',
-  privacyPolicyUrl: 'www.google.com',
+  tosUrl: 'https://www.google.com',
+  privacyPolicyUrl: 'https://www.google.com',
   credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO
 };
 
