@@ -1,18 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'firebaseui-angular';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  isAuthenticated = false;
+  subscription: Subscription;
+
   constructor(private angularFireAuth: AngularFireAuth) {
   }
 
   ngOnInit(): void {
-    this.angularFireAuth.authState.subscribe(this.firebaseAuthChangeListener);
+    this.subscription = this.angularFireAuth.authState.subscribe((response) => {
+      this.isAuthenticated = !!response;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 
   successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult): void {
@@ -27,12 +37,10 @@ export class AppComponent implements OnInit {
     console.log('Ui shown');
   }
 
-  private firebaseAuthChangeListener(response): void {
-    // if needed, do a redirect in here
-    if (response) {
-      console.log('Logged in :)');
-    } else {
-      console.log('Logged out :(');
-    }
+  private logout(): void {
+    this.angularFireAuth.signOut()
+      .then(() => {
+        console.log('loged out');
+      });
   }
 }
