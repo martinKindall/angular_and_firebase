@@ -10,6 +10,7 @@ import {Subscription} from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
+  email: string;
   subscription: Subscription;
 
   constructor(private angularFireAuth: AngularFireAuth) {
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.angularFireAuth.authState.subscribe((response) => {
       this.isAuthenticated = !!response;
+      this.email = response?.email;
     });
   }
 

@@ -4,6 +4,11 @@
       <h1>Firebase Realtime DB</h1>
     </div>
   </div>
+  <div class="row my-2" *ngIf="email">
+    <div class="col-12">
+      <h4>Welcome {{email}}</h4>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12">
       <firebase-ui
