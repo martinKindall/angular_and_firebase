@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "angular-test-ad2e1": {
+      "hosting": {
+        "firebase-realtime-db": [
+          "angular-test-ad2e1"
+        ]
+      }
+    }
+  }
+}

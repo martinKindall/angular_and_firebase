@@ -116,9 +116,16 @@
               "devServerTarget": "firebase-realtime-db:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
   },
-  "defaultProject": "firebase-realtime-db"
+  "defaultProject": "firebase-realtime-db",
+  "cli": {
+    "analytics": false
+  }
 }
