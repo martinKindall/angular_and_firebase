@@ -4,7 +4,7 @@
       <h1>Firebase Realtime DB</h1>
     </div>
   </div>
-  <div class="row my-2" *ngIf="email">
+  <div class="row my-2" *ngIf="email$ | async as email">
     <div class="col-12">
       <h4>Welcome {{email}}</h4>
     </div>
@@ -17,7 +17,7 @@
         (uiShown)="uiShownCallback()"></firebase-ui>
     </div>
   </div>
-  <div class="row" *ngIf="isAuthenticated === true">
+  <div class="row" *ngIf="(isAuthenticated$ | async) === true">
     <div class="col-4"></div>
     <div class="col-4">
       <button type="button" class="btn btn-success" (click)="logout()">Logout</button>

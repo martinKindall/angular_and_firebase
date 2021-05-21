@@ -9,7 +9,9 @@ import {firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import {authReducer} from '../reducers/auth.reducers';
+import {AuthEffects} from '../effects/auth.effects';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -35,8 +37,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     StoreModule.forRoot({
-      state: authReducer
-    })
+      appState: authReducer
+    }),
+    EffectsModule.forRoot([AuthEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

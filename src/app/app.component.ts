@@ -1,30 +1,25 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'firebaseui-angular';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {MyStore} from '../interfaces/MyStore';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
-  email: string;
-  subscription: Subscription;
+export class AppComponent {
+  isAuthenticated$: Observable<boolean>;
+  email$: Observable<string | undefined>;
 
-  constructor(private angularFireAuth: AngularFireAuth) {
-  }
-
-  ngOnInit(): void {
-    this.subscription = this.angularFireAuth.authState.subscribe((response) => {
-      this.isAuthenticated = !!response;
-      this.email = response?.email;
+  constructor(private store: Store<{appState: MyStore}>) {
+    this.isAuthenticated$ = store.select(({appState}) => {
+      return appState.authState;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.email$ = store.select(({appState}) => {
+      return appState.email;
+    });
   }
 
   successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult): void {
@@ -40,9 +35,5 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private logout(): void {
-    this.angularFireAuth.signOut()
-      .then(() => {
-        console.log('loged out');
-      });
   }
 }

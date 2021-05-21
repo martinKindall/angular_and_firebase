@@ -14,7 +14,10 @@ export class AuthEffects {
   }
 
   updateAuthState$ = createEffect(() => this.angularFireAuth.authState.pipe(
-    map((authState) => ({type: 'Auth Status-Update', state: !!authState})),
+    map((authState) => ({
+      type: 'Auth Status-Update',
+      authState: !!authState,
+      email: authState?.email})),
     catchError(() => EMPTY)
   ));
 }
