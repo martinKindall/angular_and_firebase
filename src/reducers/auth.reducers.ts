@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {authStatusUpdate} from '../actions/auth.actions';
+import {authLogout, authStatusUpdate} from '../actions/auth.actions';
 import {MyStore} from '../interfaces/MyStore';
 
 export const initialAuthState: MyStore = {authState: false, email: undefined};

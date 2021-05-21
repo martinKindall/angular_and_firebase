@@ -3,6 +3,7 @@ import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'fi
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {MyStore} from '../interfaces/MyStore';
+import {authLogout} from '../actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -35,5 +36,6 @@ export class AppComponent {
   }
 
   private logout(): void {
+    this.store.dispatch(authLogout());
   }
 }

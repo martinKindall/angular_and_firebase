@@ -5,3 +5,5 @@ export const authStatusUpdate = createAction(
   'Auth Status-Update',
   props<MyStore>()
 );
+
+export const authLogout = createAction('Auth Logout');

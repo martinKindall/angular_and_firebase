@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import { Actions, createEffect } from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {catchError, map} from 'rxjs/operators';
-import {EMPTY} from 'rxjs';
+import {catchError, map, mergeMap} from 'rxjs/operators';
+import {EMPTY, from} from 'rxjs';
 
 @Injectable()
 export class AuthEffects {
@@ -20,4 +20,10 @@ export class AuthEffects {
       email: authState?.email})),
     catchError(() => EMPTY)
   ));
+
+  logout = this.actions$.pipe(
+    ofType('Auth Logout'),
+    mergeMap(() => from(this.angularFireAuth.signOut().then())),
+    catchError(() => EMPTY)
+  ).subscribe();
 }
