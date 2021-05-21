@@ -6,7 +6,7 @@ import { environment } from '../environments/environment';
 import {AngularFireModule} from '@angular/fire';
 
 import {firebase, firebaseui, FirebaseUIModule} from 'firebaseui-angular';
-import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireAuth, AngularFireAuthModule} from '@angular/fire/auth';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -41,7 +41,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     }),
     EffectsModule.forRoot([AuthEffects])
   ],
-  providers: [],
+  providers: [
+    {provide: 'AuthInterface', useClass: AngularFireAuth}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
