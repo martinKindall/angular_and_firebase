@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {MyStore} from '../interfaces/MyStore';
 import {authLogout} from '../actions/auth.actions';
+import {Temperature} from '../interfaces/Temperature';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +14,17 @@ import {authLogout} from '../actions/auth.actions';
 export class AppComponent {
   isAuthenticated$: Observable<boolean>;
   email$: Observable<string | undefined>;
+  temperature$: Observable<Temperature>;
 
-  constructor(private store: Store<{authState: MyStore}>) {
+  constructor(private store: Store<{authState: MyStore, temperatureState: Temperature}>) {
     this.isAuthenticated$ = store.select(({authState}) => {
       return authState.authState;
     });
     this.email$ = store.select(({authState}) => {
       return authState.email;
+    });
+    this.temperature$ = store.select(({temperatureState}) => {
+      return temperatureState;
     });
   }
 

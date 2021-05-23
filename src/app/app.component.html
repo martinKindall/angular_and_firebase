@@ -17,6 +17,12 @@
         (uiShown)="uiShownCallback()"></firebase-ui>
     </div>
   </div>
+  <div class="row my-4" *ngIf="temperature$ | async as temperature">
+    <div class="col-12">
+      <p class="h4">Temperature is {{temperature.value}} celsius</p>
+      <p>Time: {{temperature.created_at}}</p>
+    </div>
+  </div>
   <div class="row" *ngIf="(isAuthenticated$ | async) === true">
     <div class="col-4"></div>
     <div class="col-4">
