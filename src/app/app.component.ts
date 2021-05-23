@@ -14,12 +14,12 @@ export class AppComponent {
   isAuthenticated$: Observable<boolean>;
   email$: Observable<string | undefined>;
 
-  constructor(private store: Store<{appState: MyStore}>) {
-    this.isAuthenticated$ = store.select(({appState}) => {
-      return appState.authState;
+  constructor(private store: Store<{authState: MyStore}>) {
+    this.isAuthenticated$ = store.select(({authState}) => {
+      return authState.authState;
     });
-    this.email$ = store.select(({appState}) => {
-      return appState.email;
+    this.email$ = store.select(({authState}) => {
+      return authState.email;
     });
   }
 

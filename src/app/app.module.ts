@@ -14,6 +14,7 @@ import {authReducer} from '../reducers/auth.reducers';
 import {AuthEffects} from '../effects/auth.effects';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {DatabaseEffects} from '../effects/database.effects';
+import {temperatureReducer} from '../reducers/database.reducers';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -40,7 +41,8 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireDatabaseModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     StoreModule.forRoot({
-      appState: authReducer
+      authState: authReducer,
+      temperatureState: temperatureReducer
     }),
     EffectsModule.forRoot([AuthEffects, DatabaseEffects])
   ],
