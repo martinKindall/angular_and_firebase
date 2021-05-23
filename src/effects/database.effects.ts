@@ -29,23 +29,7 @@ export class DatabaseEffects {
   ).subscribe();
 
   private initDbEffect(): void {
-    console.log('connecting to DB');
-    // this.updateTemperature$ = createEffect(() => {
-    //     console.log('creating effect');
-    //     return this.temperatureDBInstance$.pipe(
-    //     tap(() => console.log('I was called!')),
-    //     map((temperature: Temperature) => ({
-    //       type: 'Temperature Update',
-    //       ...temperature
-    //     })),
-    //     catchError((error) => {
-    //       console.error(error);
-    //       return EMPTY;
-    //     })
-    //   );
-    // });
     this.updateTemperature$ = createEffect(() => {
-      console.log('creating effect');
       return this.temperatureDBInstance$.pipe(
         tap(() => console.log('I was called!')),
         mergeMap((dbInstance) => {
@@ -64,8 +48,14 @@ export class DatabaseEffects {
   }
 
   private initDb(): void {
-    console.log('creating initDB');
-    this.temperatureDBInstance$.next(
-      this.database.object('temperature/randomuid'));
+    setTimeout(() => {
+      console.log('creating initDB');
+      this.temperatureDBInstance$.next(
+        this.database.object('temperature/randomuid'));
+    }, 1000);
+
+    // console.log('creating initDB');
+    // this.temperatureDBInstance$.next(
+    //   this.database.object('temperature/randomuid'));
   }
 }
