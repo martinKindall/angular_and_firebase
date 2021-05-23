@@ -23,18 +23,8 @@ export class DatabaseEffects {
     ofType('Auth Status-Update'),
     tap((authState: MyStore) => {
       if (authState.authState) {
-        console.log('initiating through auth');
         this.initDb();
       }
-    }),
-    catchError(() => EMPTY)
-  ).subscribe();
-
-  reloadEvent = this.actions$.pipe(
-    ofType('Database Init'),
-    tap(() => {
-      this.initDb();
-      console.log('Initiating Database again');
     }),
     catchError(() => EMPTY)
   ).subscribe();
@@ -42,7 +32,6 @@ export class DatabaseEffects {
   private initDbEffect(): void {
     this.updateTemperature$ = createEffect(() => {
       return this.temperatureDBInstance$.pipe(
-        tap(() => console.log('I was called!')),
         mergeMap((dbInstance) => {
           return dbInstance.valueChanges();
         }),
@@ -59,7 +48,6 @@ export class DatabaseEffects {
   }
 
   private initDb(): void {
-    console.log('creating initDB');
     this.temperatureDBInstance$.next(
       this.database.object('temperature/randomuid'));
   }
