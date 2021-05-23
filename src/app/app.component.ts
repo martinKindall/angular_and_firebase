@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store';
 import {MyStore} from '../interfaces/MyStore';
 import {authLogout} from '../actions/auth.actions';
 import {Temperature} from '../interfaces/Temperature';
+import {initDBConnection} from '../actions/database.actions';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent {
 
   successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult): void {
     console.log('Hallo');
+    this.store.dispatch(initDBConnection());
   }
 
   errorCallback(errorData: FirebaseUISignInFailure): void {

@@ -5,3 +5,5 @@ export const temperatureUpdate = createAction(
   'Temperature Update',
   props<Temperature>()
 );
+
+export const initDBConnection = createAction('Database Init');
