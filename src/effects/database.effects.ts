@@ -4,6 +4,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import {Temperature} from '../interfaces/Temperature';
 import {EMPTY, Observable, Subject} from 'rxjs';
+import {MyStore} from '../interfaces/MyStore';
 
 
 @Injectable()
@@ -16,8 +17,18 @@ export class DatabaseEffects {
     private actions$: Actions) {
     this.temperatureDBInstance$ = new Subject();
     this.initDbEffect();
-    this.initDb();
   }
+
+  authEvent = this.actions$.pipe(
+    ofType('Auth Status-Update'),
+    tap((authState: MyStore) => {
+      if (authState.authState) {
+        console.log('initiating through auth');
+        this.initDb();
+      }
+    }),
+    catchError(() => EMPTY)
+  ).subscribe();
 
   reloadEvent = this.actions$.pipe(
     ofType('Database Init'),
@@ -48,14 +59,8 @@ export class DatabaseEffects {
   }
 
   private initDb(): void {
-    setTimeout(() => {
-      console.log('creating initDB');
-      this.temperatureDBInstance$.next(
-        this.database.object('temperature/randomuid'));
-    }, 1000);
-
-    // console.log('creating initDB');
-    // this.temperatureDBInstance$.next(
-    //   this.database.object('temperature/randomuid'));
+    console.log('creating initDB');
+    this.temperatureDBInstance$.next(
+      this.database.object('temperature/randomuid'));
   }
 }
