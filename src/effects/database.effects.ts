@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, mergeMap, tap} from 'rxjs/operators';
+import {catchError, filter, map, mergeMap, take, tap} from 'rxjs/operators';
 import {Temperature} from '../interfaces/Temperature';
 import {EMPTY, Observable, Subject} from 'rxjs';
 import {MyStore} from '../interfaces/MyStore';
@@ -21,6 +21,10 @@ export class DatabaseEffects {
 
   authEvent = this.actions$.pipe(
     ofType('Auth Status-Update'),
+    filter((authState: MyStore) => {
+      return authState.authState;
+    }),
+    take(1),
     tap((authState: MyStore) => {
       if (authState.authState) {
         this.initDb();
