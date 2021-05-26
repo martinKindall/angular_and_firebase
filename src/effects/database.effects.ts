@@ -16,7 +16,7 @@ export class DatabaseEffects {
     private database: AngularFireDatabase,
     private actions$: Actions) {
     this.temperatureDBInstance$ = new Subject();
-    this.initDbEffect();
+    this.initTemperatureReadEffect();
     this.initTemperatureSaveSubscription();
   }
 
@@ -34,7 +34,7 @@ export class DatabaseEffects {
     catchError(() => EMPTY)
   ).subscribe();
 
-  private initDbEffect(): void {
+  private initTemperatureReadEffect(): void {
     this.updateTemperature$ = createEffect(() => {
       return this.temperatureDBInstance$.pipe(
         mergeMap((dbInstance) => {
@@ -59,7 +59,11 @@ export class DatabaseEffects {
 
   private initTemperatureSaveSubscription(): void {
     const tempObservable: Observable<Temperature> = this.actions$.pipe(
-     ofType('Temperature Save')
+        ofType('Temperature Save'),
+        map((temperature: Temperature) => ({
+          value: temperature.value,
+          created_at: temperature.created_at
+        }))
     );
     combineLatest([tempObservable, this.temperatureDBInstance$]).pipe(
         mergeMap((values) => {

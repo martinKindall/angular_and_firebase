@@ -42,14 +42,13 @@ export class AppComponent {
     console.log('Ui shown');
   }
 
-  private logout(): void {
+  logout(): void {
     this.store.dispatch(authLogout());
   }
 
   setTemperature(): void {
-    console.log(this.temperatureToSet);
     this.store.dispatch(saveTemperatureUpdate({
-      created_at: '2000-01-01 00:00:00',
+      created_at: new Date().toISOString(),
       value: this.temperatureToSet
     }));
   }
