@@ -15,6 +15,7 @@ export class AppComponent {
   isAuthenticated$: Observable<boolean>;
   email$: Observable<string | undefined>;
   temperature$: Observable<Temperature>;
+  temperatureToSet: number;
 
   constructor(private store: Store<{authState: MyStore, temperatureState: Temperature}>) {
     this.isAuthenticated$ = store.select(({authState}) => {
@@ -42,5 +43,9 @@ export class AppComponent {
 
   private logout(): void {
     this.store.dispatch(authLogout());
+  }
+
+  setTemperature(): void {
+    console.log(this.temperatureToSet);
   }
 }
