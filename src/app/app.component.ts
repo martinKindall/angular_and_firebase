@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store';
 import {MyStore} from '../interfaces/MyStore';
 import {authLogout} from '../actions/auth.actions';
 import {Temperature} from '../interfaces/Temperature';
+import {saveTemperatureUpdate} from '../actions/database.actions';
 
 @Component({
   selector: 'app-root',
@@ -47,5 +48,9 @@ export class AppComponent {
 
   setTemperature(): void {
     console.log(this.temperatureToSet);
+    this.store.dispatch(saveTemperatureUpdate({
+      created_at: '2000-01-01 00:00:00',
+      value: this.temperatureToSet
+    }));
   }
 }

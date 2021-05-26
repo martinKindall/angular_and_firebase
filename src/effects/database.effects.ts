@@ -33,6 +33,22 @@ export class DatabaseEffects {
     catchError(() => EMPTY)
   ).subscribe();
 
+  saveTemperatureEvent = this.actions$.pipe(
+    ofType('Temperature Save'),
+    tap(() => console.log('I was here!')),
+    mergeMap((temperature: Temperature) => {
+      return this.temperatureDBInstance$.pipe(
+          map((dbInstance) => {
+            return dbInstance.set(temperature);
+          })
+      );
+    }),
+    catchError((error) => {
+      console.error(error);
+      return EMPTY;
+    })
+  ).subscribe();
+
   private initDbEffect(): void {
     this.updateTemperature$ = createEffect(() => {
       return this.temperatureDBInstance$.pipe(
@@ -40,7 +56,7 @@ export class DatabaseEffects {
           return dbInstance.valueChanges();
         }),
         map((temperature: Temperature) => ({
-          type: 'Temperature Update',
+          type: 'Temperature Read',
           ...temperature
         })),
         catchError((error) => {

@@ -1,12 +1,12 @@
 import {Temperature} from '../interfaces/Temperature';
 import {Action, createReducer, on} from '@ngrx/store';
-import {temperatureUpdate} from '../actions/database.actions';
+import {readTemperatureUpdate} from '../actions/database.actions';
 
 export const initialTemperatureState: Temperature = {value: 0, created_at: ''};
 
 const myTemperatureReducer = createReducer(
   initialTemperatureState,
-  on(temperatureUpdate, (state: Temperature, props: Temperature) => {
+  on(readTemperatureUpdate, (state: Temperature, props: Temperature) => {
     return props;
   })
 );
