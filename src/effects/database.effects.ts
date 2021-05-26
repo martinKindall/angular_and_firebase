@@ -3,7 +3,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, filter, map, mergeMap, take, tap} from 'rxjs/operators';
 import {Temperature} from '../interfaces/Temperature';
-import {EMPTY, Observable, Subject} from 'rxjs';
+import {EMPTY, Observable, Subject, combineLatest, from} from 'rxjs';
 import {MyStore} from '../interfaces/MyStore';
 
 
@@ -17,6 +17,7 @@ export class DatabaseEffects {
     private actions$: Actions) {
     this.temperatureDBInstance$ = new Subject();
     this.initDbEffect();
+    this.initTemperatureSaveSubscription();
   }
 
   authEvent = this.actions$.pipe(
@@ -31,22 +32,6 @@ export class DatabaseEffects {
       }
     }),
     catchError(() => EMPTY)
-  ).subscribe();
-
-  saveTemperatureEvent = this.actions$.pipe(
-    ofType('Temperature Save'),
-    tap(() => console.log('I was here!')),
-    mergeMap((temperature: Temperature) => {
-      return this.temperatureDBInstance$.pipe(
-          map((dbInstance) => {
-            return dbInstance.set(temperature);
-          })
-      );
-    }),
-    catchError((error) => {
-      console.error(error);
-      return EMPTY;
-    })
   ).subscribe();
 
   private initDbEffect(): void {
@@ -70,5 +55,20 @@ export class DatabaseEffects {
   private initDb(): void {
     this.temperatureDBInstance$.next(
       this.database.object('temperature/randomuid'));
+  }
+
+  private initTemperatureSaveSubscription(): void {
+    const tempObservable: Observable<Temperature> = this.actions$.pipe(
+     ofType('Temperature Save')
+    );
+    combineLatest([tempObservable, this.temperatureDBInstance$]).pipe(
+        mergeMap((values) => {
+          return from(values[1].set(values[0]).then());
+        }),
+        catchError((error) => {
+          console.error(error);
+          return EMPTY;
+        })
+    ).subscribe();
   }
 }
